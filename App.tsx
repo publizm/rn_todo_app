@@ -8,8 +8,9 @@ import List from './src/screens/List';
 export type RootStackParamList = {
   Home: {
     userName: string;
+    count: number;
   };
-  List: {};
+  List: {randomCount: number};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

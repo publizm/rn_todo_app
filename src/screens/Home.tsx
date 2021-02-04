@@ -10,11 +10,16 @@ const Home = () => {
   const route = useRoute<HomeScreenParams>();
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
       <Text>Hello {route.params.userName}!</Text>
       {route.params.count && (
         <>
-          <Text style={{fontSize: 20}}>두둥 등장!!</Text>
+          <Text style={{fontSize: 20}}>두둥 등장ggg!gggg!</Text>
           <Text style={{fontSize: 30}}>{route.params.count}</Text>
         </>
       )}
@@ -23,10 +28,10 @@ const Home = () => {
         onPress={() =>
           navigation.navigate('List', {
             randomCount: Math.floor(Math.random() * 100),
+            title: 'hello world',
           })
         }
       />
-      <Button title="Go to Back" onPress={() => navigation.goBack()} />
     </View>
   );
 };

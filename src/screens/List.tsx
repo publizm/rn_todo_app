@@ -8,6 +8,7 @@ type ListScreenParams = RouteProp<RootStackParamList, 'List'>;
 const List = () => {
   const route = useRoute<ListScreenParams>();
   const navigation = useNavigation();
+  console.log('navigation', navigation);
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -18,6 +19,10 @@ const List = () => {
         onPress={() =>
           navigation.navigate('Home', {count: route.params.randomCount})
         }
+      />
+      <Button
+        title="Change Header Title"
+        onPress={() => navigation.setOptions({title: 'Changed Title!'})}
       />
       <Button title="Go to Back" onPress={() => navigation.goBack()} />
     </View>

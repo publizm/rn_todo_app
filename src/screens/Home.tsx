@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../../App';
@@ -8,7 +8,21 @@ type HomeScreenParams = RouteProp<RootStackParamList, 'Home'>;
 
 const Home = () => {
   const route = useRoute<HomeScreenParams>();
+  const [localCount, setLocalCount] = useState(0);
   const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    //? Stack.Screen에서 localCount라는 변수를 내려줄 수 없어서 LayoutEffect로 만들어준다?
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => setLocalCount((c) => c + 1)}
+          title="Update count"
+        />
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View
       style={{
@@ -16,6 +30,7 @@ const Home = () => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+      <Text>localCount: {localCount}</Text>
       <Text>Hello {route.params.userName}!</Text>
       {route.params.count && (
         <>

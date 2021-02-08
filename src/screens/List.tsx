@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, SafeAreaView, Text, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import TodoList from '@components/TodoList';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -7,16 +7,20 @@ import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 
 type ListScreenParams = RouteProp<RootStackParamList, 'List'>;
 
-export const Feed = () => (
-  <View>
-    <Text>Feed</Text>
-  </View>
-);
+export const Feed = () => {
+  const navigation = useNavigation();
+  return (
+    <SafeAreaView style={{height: '100%', justifyContent: 'center'}}>
+      <Text>Feed</Text>
+      <Button title="back" onPress={() => navigation.goBack()} />
+    </SafeAreaView>
+  );
+};
 
 export const Messages = () => (
-  <View>
+  <SafeAreaView style={{height: '100%', justifyContent: 'center'}}>
     <Text>Messages</Text>
-  </View>
+  </SafeAreaView>
 );
 
 const List = () => {
@@ -36,7 +40,10 @@ const List = () => {
       />
       <Button
         title="Go to Menu Screen"
-        onPress={() => navigation.navigate('Menu')}
+        onPress={
+          () => navigation.navigate('Menu')
+          // navigation.navigate('Menu', {screen: 'Messages'})
+        }
       />
       <Button
         title="Change Header Title"

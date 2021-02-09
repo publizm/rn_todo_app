@@ -1,94 +1,110 @@
-import React from 'react';
-import {StyleSheet, Image, Button} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import * as React from 'react';
+import {Button, View, Text} from 'react-native';
 import {
-  createStackNavigator,
-  HeaderBackButton,
-  StackHeaderTitleProps,
-} from '@react-navigation/stack';
-import Home from '@screens/Home';
-import List, {Feed, Messages} from '@screens/List';
-import TestImage from '@assets/images/logo.png';
+  NavigationContainer,
+  useFocusEffect,
+  useIsFocused,
+} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-export type RootStackParamList = {
-  Home: {
-    userName: string;
-    count: number;
-  };
-  List: {
-    title: string;
-    randomCount: number;
-  };
-  Menu: {};
-};
+function SettingsScreen({navigation}) {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Settings Screen</Text>
+      <Button
+        title="Go to Profile"
+        onPress={() => navigation.navigate('Profile')}
+      />
+    </View>
+  );
+}
 
-const Stack = createStackNavigator<RootStackParamList>();
+function ProfileScreen({navigation}) {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Profile Screen</Text>
+      <Button
+        title="Go to Settings"
+        onPress={() => navigation.navigate('Settings')}
+      />
+    </View>
+  );
+}
+
+function HomeScreen({navigation}) {
+  const isFocused = useIsFocused();
+
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Home Screen : {isFocused ? 'focused' : 'unfocused'}</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
+}
+
+function DetailsScreen({navigation}) {
+  const [test, setTest] = React.useState('test');
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     // Screen was focused
+  //     // Do something
+  //     setTimeout(() => setTest('set Test'), 2000);
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setTimeout(() => setTest('set Test'), 2000);
+      return () => {
+        setTest('1111');
+      };
+    }, []),
+  );
+
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Details Screen {test}</Text>
+      <Button
+        title="Go to Details... again"
+        onPress={() => navigation.push('Details')}
+      />
+    </View>
+  );
+}
 const Tab = createBottomTabNavigator();
+const SettingsStack = createStackNavigator();
+const HomeStack = createStackNavigator();
 
-const LogoTitle = (_props: StackHeaderTitleProps) => (
-  <Image style={{width: 50, height: 50}} source={TestImage} />
-);
-
-const Menu = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Feed" component={Feed} />
-    <Tab.Screen name="Messages" component={Messages} />
-  </Tab.Navigator>
-);
-
-const App = () => {
+export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          //? screenOptions - 공통 해더 스타일 공유
-          headerStyle: {
-            backgroundColor: '#FFF',
-            borderWidth: 0,
-          },
-          headerTintColor: '#0c080c',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTransparent: true,
-        }}>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          initialParams={{userName: 'publee'}}
-          options={{
-            headerTitle: (props) => <LogoTitle {...props} />,
-            headerLeft: (props) => (
-              <HeaderBackButton
-                {...props}
-                label="backing" //? 오버라이딩 텍스트
-                onPress={() => {
-                  // Do something
-                }}
+      <Tab.Navigator>
+        <Tab.Screen name="First">
+          {() => (
+            <SettingsStack.Navigator>
+              <SettingsStack.Screen
+                name="Settings"
+                component={SettingsScreen}
               />
-            ),
-            headerRight: () => (
-              <Button
-                onPress={() => alert('This is a button!')}
-                title="Info"
-                color="#000"
-              />
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="List"
-          component={List}
-          options={({route}) => ({title: route.params.title})}
-        />
-        <Stack.Screen name="Menu" component={Menu} />
-      </Stack.Navigator>
+              <SettingsStack.Screen name="Profile" component={ProfileScreen} />
+            </SettingsStack.Navigator>
+          )}
+        </Tab.Screen>
+        <Tab.Screen name="Second">
+          {() => (
+            <HomeStack.Navigator>
+              <HomeStack.Screen name="Home" component={HomeScreen} />
+              <HomeStack.Screen name="Details" component={DetailsScreen} />
+            </HomeStack.Navigator>
+          )}
+        </Tab.Screen>
+      </Tab.Navigator>
     </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({});
-
-export default App;
+}

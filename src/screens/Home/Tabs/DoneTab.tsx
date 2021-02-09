@@ -1,14 +1,20 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, SafeAreaView} from 'react-native';
 
 const DoneTab = () => {
   return (
-    <View>
+    <SafeAreaView style={styles.TabContainer}>
       <Text>Hello I'm Done Tab</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default DoneTab;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  TabContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

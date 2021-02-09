@@ -10,46 +10,20 @@ import {
 } from 'react-native';
 import ArrowBlueSVG from '@assets/svg/icon_arrow_right.svg';
 import Logo from '@assets/images/logo.png';
+import {useNavigation} from '@react-navigation/native';
 
 console.log(ArrowBlueSVG);
 
 const IntroScreen = () => {
-  const onHandeledPress = () =>
-    Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
-      [
-        {
-          text: 'Ask me later',
-          onPress: () => {
-            alert('Ask me later');
-            console.log('Ask me later pressed');
-          },
-        },
-        {
-          text: 'Cancel',
-          onPress: () => {
-            alert('Cancel');
-            console.log('Cancel Pressed');
-          },
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: () => {
-            alert('OK');
-            console.log('OK Pressed');
-          },
-        },
-      ],
-      {cancelable: false},
-    );
+  const navigation = useNavigation();
+
+  const onHandeledPress = () => navigation.navigate('Home');
 
   return (
-    <SafeAreaView style={styles.introConatiner}>
-      <Text>Hello I'm Intro Screen</Text>
-      <TouchableOpacity onPress={onHandeledPress}>
-        <Text style={styles.StartTodoListButton}>들어가기</Text>
+    <SafeAreaView style={styles.IntroConatiner}>
+      <Text style={styles.IntroTitle}>Hello I'm Intro Screen</Text>
+      <TouchableOpacity style={styles.nextPageButton} onPress={onHandeledPress}>
+        <Text style={styles.nextPageButtonText}>들어가기</Text>
         <ArrowBlueSVG />
       </TouchableOpacity>
     </SafeAreaView>
@@ -59,13 +33,23 @@ const IntroScreen = () => {
 export default IntroScreen;
 
 const styles = StyleSheet.create({
-  introConatiner: {
+  IntroConatiner: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  StartTodoListButton: {
+  IntroTitle: {
+    fontSize: 25,
+  },
+  nextPageButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  nextPageButtonText: {
     color: `${palette.blue_500}`,
     padding: 5,
+    fontSize: 20,
   },
 });

@@ -1,19 +1,17 @@
 import React from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
   BottomTabBarOptions,
   BottomTabBarProps,
+  createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import palette from '@assets/styles/palette';
+import AllTab from './Tabs/AllTab';
+import ActiveTab from './Tabs/ActiveTab';
+import DoneTab from './Tabs/DoneTab';
+import {SafeAreaProvider} from 'react-native-safe-area-view';
 
-const HomeTabBar = ({
+const HomeTabBarList = ({
   state,
   descriptors,
   navigation,
@@ -65,6 +63,7 @@ const HomeTabBar = ({
             backgroundColor: isFocused ? palette.blue_500 : '#fff',
             paddingVertical: 10,
             fontWeight: isFocused ? '700' : '400',
+            fontSize: 16,
             color: isFocused ? '#fff' : '#222',
           },
         });
@@ -82,6 +81,22 @@ const HomeTabBar = ({
         );
       })}
     </View>
+  );
+};
+
+const HomeTab = createBottomTabNavigator();
+
+const HomeTabBar = () => {
+  return (
+    <SafeAreaProvider>
+      <HomeTab.Navigator
+        initialRouteName="All"
+        tabBar={(props) => <HomeTabBarList {...props} />}>
+        <HomeTab.Screen name="All" component={AllTab} />
+        <HomeTab.Screen name="Active" component={ActiveTab} />
+        <HomeTab.Screen name="Done" component={DoneTab} />
+      </HomeTab.Navigator>
+    </SafeAreaProvider>
   );
 };
 

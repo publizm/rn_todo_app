@@ -1,23 +1,21 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AllTab from '@screens/Home/Tabs/AllTab';
-import ActiveTab from '@screens/Home/Tabs/ActiveTab';
-import DoneTab from '@screens/Home/Tabs/DoneTab';
 import HomeTabBar from '@screens/Home/HomeTabBar';
+import {createStackNavigator} from '@react-navigation/stack';
+import WriteModal from '@screens/Home/WriteModal';
 
-const HomeTabs = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
 
 const HomeScreen = () => {
   return (
     <SafeAreaProvider>
-      <HomeTabs.Navigator
-        initialRouteName="All"
-        tabBar={(props) => <HomeTabBar {...props} />}>
-        <HomeTabs.Screen name="All" component={AllTab} />
-        <HomeTabs.Screen name="Active" component={ActiveTab} />
-        <HomeTabs.Screen name="Done" component={DoneTab} />
-      </HomeTabs.Navigator>
+      <HomeStack.Navigator
+        initialRouteName="Home"
+        mode="modal"
+        screenOptions={{headerShown: false}}>
+        <HomeStack.Screen name="Home" component={HomeTabBar} />
+        <HomeStack.Screen name="Write" component={WriteModal} />
+      </HomeStack.Navigator>
     </SafeAreaProvider>
   );
 };
